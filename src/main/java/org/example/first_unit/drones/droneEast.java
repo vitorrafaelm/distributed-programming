@@ -1,19 +1,19 @@
 package org.example.first_unit.drones;
 
 import org.example.first_unit.drones.base.BaseDrone;
+import org.example.first_unit.drones.connection.LoadBalanceConnection;
 
 public class droneEast {
     public static void main(String[] args) {
         String csv_file_name = "drone_east.csv";
 
-        // Connection details for the drone
-        String connection_port = "51789"; // Port to send data to the multicast data center server
-        String connection_host = "225.7.8.9"; // Ip group to send data to the multicast data center server
+        LoadBalanceConnection loadBalanceConnection = new LoadBalanceConnection("localhost", 9876);
+        loadBalanceConnection.connectToLocationServer();
 
-        // Aqui ainda deve adicionar balanceamento de carga a partir da listagem dos servidores disponíveis;
+        String dataServerPort = loadBalanceConnection.getDataServerPort();
+        String dataServerHost = loadBalanceConnection.getDataServerHost();
 
-        BaseDrone baseDrone = new BaseDrone(csv_file_name, connection_port, connection_host);
-        baseDrone.processAndSendData();
-
+        BaseDrone baseDrone = new BaseDrone(csv_file_name, dataServerPort, dataServerHost);
+        baseDrone.processAndSendData(loadBalanceConnection);
     }
 }

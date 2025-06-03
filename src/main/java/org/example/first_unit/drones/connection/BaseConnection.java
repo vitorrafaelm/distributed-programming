@@ -1,5 +1,7 @@
 package org.example.first_unit.drones.connection;
 
+import com.google.gson.JsonObject;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.DatagramPacket;
@@ -25,7 +27,14 @@ public class BaseConnection implements Runnable {
         System.out.println("Connecting to " + connection_host_group + " on port " + connection_port);
 
         try (DatagramSocket ds = new DatagramSocket()) {
-            byte bufferSend[] = batch.toString().getBytes();
+
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("operation", "process_data");
+            jsonObject.addProperty("data", batch.toString());
+
+            byte bufferSend[] = jsonObject.toString().getBytes();
+
+            System.out.println(bufferSend.length + " bytes to send");
 
             DatagramPacket packageToSend = new DatagramPacket(
                     bufferSend,
@@ -36,7 +45,6 @@ public class BaseConnection implements Runnable {
 
             ds.send(packageToSend);
             ds.close();
-
         } catch (IOException e) {
             System.err.println("Error sending data to the server: " + e.getMessage());
         }

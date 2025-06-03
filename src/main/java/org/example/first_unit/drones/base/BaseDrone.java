@@ -1,5 +1,7 @@
 package org.example.first_unit.drones.base;
 
+import org.example.first_unit.drones.connection.LoadBalanceConnection;
+
 import java.io.*;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ public class BaseDrone {
         this.connection_host = connection_host;
     }
 
-    public void processAndSendData() {
+    public void processAndSendData(LoadBalanceConnection loadBalanceConnection) {
         try {
             List<String> batch = new ArrayList<>();
             FileReader fileReader = new FileReader(
@@ -30,6 +32,7 @@ public class BaseDrone {
                     if (batch.size() == 1000) {
                         sendBatch(batch);
                         batch.clear();
+                        break;
                     }
                 }
 
