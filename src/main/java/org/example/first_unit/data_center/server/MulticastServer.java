@@ -7,6 +7,7 @@ import org.example.first_unit.data_center.database.services.WeatherService;
 
 import java.net.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,9 +43,9 @@ public class MulticastServer implements Runnable {
 
                 if ("process_data".equals(operation)) {
                     initiateDataProcessing(data);
-                    continue; // Ignore invalid operations
                 } else {
-                    // função de consultar dados
+                    String port = message.get("port").getAsString();
+                    sendDataToClient(port);
                 }
             }
 
@@ -56,7 +57,6 @@ public class MulticastServer implements Runnable {
     }
 
     private byte[] CaptureMessage(MulticastSocket ms) throws Exception {
-        // Como saber qual o tamanho do buffer de recebimento?
         byte bufferReceive[] = new byte[50000];
         DatagramPacket pacoteRecepcao = new DatagramPacket(
                 bufferReceive,
@@ -84,5 +84,33 @@ public class MulticastServer implements Runnable {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    private void sendDataToClient(String port) {
+        WeatherService weatherService = new WeatherService();
+
+        List<String> weatherDataList = new ArrayList<>();
+
+        JsonObject jsonObject = new JsonObject();
+
+        weatherService.list().forEach(weather -> {
+            weatherDataList.add(weather.getWeatherData());
+        });
+
+        jsonObject.addProperty("data", weatherDataList.toString());
+        byte bufferSend[] = jsonObject.toString().getBytes();
+
+        try (DatagramSocket ds = new DatagramSocket()) {
+            DatagramPacket packageToSend = new DatagramPacket(
+                    bufferSend,
+                    bufferSend.length,
+                    InetAddress.getByName(getMulticastServerHost),
+                    Integer.parseInt(port)
+            );
+
+            ds.send(packageToSend);
+        } catch (Exception e) {
+            System.err.println("Error sending data to the client: " + e.getMessage());
+        }
     }
 }

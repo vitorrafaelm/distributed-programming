@@ -27,7 +27,6 @@ public class BaseConnection implements Runnable {
         System.out.println("Connecting to " + connection_host_group + " on port " + connection_port);
 
         try (DatagramSocket ds = new DatagramSocket()) {
-
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("operation", "process_data");
             jsonObject.addProperty("data", batch.toString());

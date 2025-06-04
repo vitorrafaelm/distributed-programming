@@ -45,7 +45,7 @@ public class LoadBalance {
     }
 
     private static void setupDataServersAddresses() {
-        // dataServers.add("225.7.8.9:54329");
+        dataServers.add("225.7.8.9:54329");
         dataServers.add("225.7.8.9:54330");
     }
 }

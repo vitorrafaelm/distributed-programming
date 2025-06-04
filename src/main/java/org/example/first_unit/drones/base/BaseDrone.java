@@ -32,7 +32,8 @@ public class BaseDrone {
                     if (batch.size() == 1000) {
                         sendBatch(batch);
                         batch.clear();
-                        break;
+
+                        Thread.sleep(5000);
                     }
                 }
 
@@ -40,6 +41,8 @@ public class BaseDrone {
                 if (!batch.isEmpty()) {
                     sendBatch(batch);
                 }
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         } catch (IOException e) {
             System.err.println("Error reading the CSV file: " + e.getMessage());
