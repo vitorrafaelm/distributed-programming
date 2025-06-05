@@ -26,9 +26,9 @@ public class droneNorth {
         boolean running = true;
 
         while (running) {
-            LOG.info("Choose an option:");
-            LOG.info("1. Call processAndSendData");
-            LOG.info("2. Exit");
+            System.out.println("Choose an option:");
+            System.out.println("1. Call processAndSendData");
+            System.out.println("2. Exit");
 
             String userInput = scanner.nextLine().trim();
 
