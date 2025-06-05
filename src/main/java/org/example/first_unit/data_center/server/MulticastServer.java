@@ -7,7 +7,6 @@ import org.example.first_unit.data_center.database.services.WeatherService;
 
 import java.net.*;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,14 +23,14 @@ public class MulticastServer implements Runnable {
     public void run() {
         boolean flag = true;
 
-        try(MulticastSocket ms = new MulticastSocket(Integer.parseInt(multicastServerPort))) {
+        try (MulticastSocket ms = new MulticastSocket(Integer.parseInt(multicastServerPort))) {
             InetAddress multicastIP = InetAddress.getByName(getMulticastServerHost);
 
             InetSocketAddress group = new InetSocketAddress(multicastIP, Integer.parseInt(multicastServerPort));
             NetworkInterface networkInterface = NetworkInterface.getByName("en0");
             ms.joinGroup(group, networkInterface);
 
-            while(flag) {
+            while (flag) {
                 byte[] messageReceived = CaptureMessage(ms);
                 System.out.println("Message received: " + new String(messageReceived).trim());
 
@@ -44,8 +43,9 @@ public class MulticastServer implements Runnable {
                 if ("process_data".equals(operation)) {
                     initiateDataProcessing(data);
                 } else {
-                    String port = message.get("port").getAsString();
-                    sendDataToClient(port);
+                    final var host = message.get("host").getAsString();
+                    final var port = message.get("port").getAsInt();
+                    sendDataToClient(host, port);
                 }
             }
 
@@ -60,8 +60,7 @@ public class MulticastServer implements Runnable {
         byte bufferReceive[] = new byte[50000];
         DatagramPacket pacoteRecepcao = new DatagramPacket(
                 bufferReceive,
-                bufferReceive.length
-        );
+                bufferReceive.length);
 
         ms.receive(pacoteRecepcao);
         return bufferReceive;
@@ -86,31 +85,27 @@ public class MulticastServer implements Runnable {
         });
     }
 
-    private void sendDataToClient(String port) {
-        WeatherService weatherService = new WeatherService();
+    private void sendDataToClient(final String host, final Integer port) {
+        // Obter dados
+        final var weatherService = new WeatherService();
+        final var weatherDataList = weatherService.list().stream()
+                .map(Weather::getWeatherData)
+                .toList();
 
-        List<String> weatherDataList = new ArrayList<>();
-
-        JsonObject jsonObject = new JsonObject();
-
-        weatherService.list().forEach(weather -> {
-            weatherDataList.add(weather.getWeatherData());
-        });
-
+        // Criar JSON
+        final var jsonObject = new JsonObject();
         jsonObject.addProperty("data", weatherDataList.toString());
-        byte bufferSend[] = jsonObject.toString().getBytes();
+        final var bufferSend = jsonObject.toString().getBytes();
 
-        try (DatagramSocket ds = new DatagramSocket()) {
-            DatagramPacket packageToSend = new DatagramPacket(
-                    bufferSend,
-                    bufferSend.length,
-                    InetAddress.getByName(getMulticastServerHost),
-                    Integer.parseInt(port)
-            );
+        // Enviar dados para o cliente
+        try (final var client = new Socket(host, port)) {
+            final var writer = client.getOutputStream();
 
-            ds.send(packageToSend);
+            writer.write(bufferSend);
+            writer.flush();
         } catch (Exception e) {
             System.err.println("Error sending data to the client: " + e.getMessage());
         }
     }
+
 }

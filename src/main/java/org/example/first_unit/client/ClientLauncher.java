@@ -11,7 +11,7 @@ public class ClientLauncher {
         final var port = 7000 + deciseconds;
 
         // Iniciar o executor do cliente com a porta gerada
-        final var multicastExecutor = new ClientExecutor(MULTICAST_HOST, MULTICAST_PORT, "localhost", port);
+        final var multicastExecutor = new ClientExecutor(MULTICAST_HOST, MULTICAST_PORT, port);
         multicastExecutor.run();
     }
 
