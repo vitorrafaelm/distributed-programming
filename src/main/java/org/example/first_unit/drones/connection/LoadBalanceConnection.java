@@ -35,7 +35,7 @@ public class LoadBalanceConnection {
             this.dataServerPort = serverInfo[1];
             LOG.info("Servidor de dados encontrado em " + dataServerHost + ":" + dataServerPort);
         } catch (IOException e) {
-            System.err.println("Erro ao conectar ao servidor de localização: " + e.getMessage());
+            LOG.error("Erro ao conectar ao servidor de localização", e);
             System.exit(1);
         }
     }

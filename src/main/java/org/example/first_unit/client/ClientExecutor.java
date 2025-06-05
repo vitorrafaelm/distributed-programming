@@ -18,7 +18,7 @@ public class ClientExecutor implements Runnable {
             final var executor = Executors.newSingleThreadExecutor();
             executor.submit(new Client(multicastHost, multicastPort, port));
         } catch (final IOException e) {
-            throw new RuntimeException("Erro ao iniciar o cliente: " + e.getMessage(), e);
+            throw new RuntimeException("Erro ao iniciar o cliente", e);
         }
     }
 }

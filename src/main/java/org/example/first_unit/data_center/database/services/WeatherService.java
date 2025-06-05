@@ -17,7 +17,7 @@ public class WeatherService {
         try {
             this.dao = new WeatherDao();
         } catch (SQLException e) {
-            throw new RuntimeException("Error initializing WeatherService: " + e.getMessage(), e);
+            throw new RuntimeException("Error initializing WeatherService", e);
         }
     }
 

@@ -40,7 +40,7 @@ public class ClientHandler implements Runnable {
             in.close();
             clientSocket.close();
         } catch (IOException e) {
-            System.err.println("Erro ao processar requisição do cliente: " + e.getMessage());
+            LOG.error("Erro ao processar requisição do cliente", e);
         }
     }
 

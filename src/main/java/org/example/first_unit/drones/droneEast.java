@@ -14,7 +14,7 @@ public class droneEast {
     public static void main(String[] args) {
         String csv_file_name = "drone_east.csv";
 
-        LoadBalanceConnection loadBalanceConnection = new LoadBalanceConnection("localhost", 9876);
+        LoadBalanceConnection loadBalanceConnection = new LoadBalanceConnection(System.getenv("LOAD_BALANCE_IP"), 9876);
         loadBalanceConnection.connectToLocationServer();
 
         String dataServerPort = loadBalanceConnection.getDataServerPort();

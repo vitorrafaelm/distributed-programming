@@ -15,40 +15,38 @@ public class BaseConnection implements Runnable {
 
     private static final Logger LOG = LoggerFactory.getLogger(BaseConnection.class.getSimpleName());
 
-    private String connection_host_group;
-    private String connection_port;
-    private List<String> batch;
+    private final String connectionHostGroup;
+    private final String connectionPort;
+    private final List<String> batch;
 
-    public BaseConnection(String connection_host_group, String connectionPort, List<String> batch) {
-        this.connection_host_group = connection_host_group;
-        this.connection_port = connectionPort;
+    public BaseConnection(final String connectionHostGroup, final String connectionPort, final List<String> batch) {
+        this.connectionHostGroup = connectionHostGroup;
+        this.connectionPort = connectionPort;
 
         this.batch = batch;
     }
 
     @Override
     public void run() {
-        LOG.info("Connecting to " + connection_host_group + " on port " + connection_port);
+        LOG.info("Connecting to {} on port {}", connectionHostGroup, connectionPort);
 
-        try (DatagramSocket ds = new DatagramSocket()) {
-            JsonObject jsonObject = new JsonObject();
+        try (final var ds = new DatagramSocket()) {
+            final var jsonObject = new JsonObject();
             jsonObject.addProperty("operation", "process_data");
             jsonObject.addProperty("data", batch.toString());
 
-            byte bufferSend[] = jsonObject.toString().getBytes();
+            final var bufferSend = jsonObject.toString().getBytes();
+            LOG.info("{} bytes to send", bufferSend.length);
 
-            LOG.info(bufferSend.length + " bytes to send");
-
-            DatagramPacket packageToSend = new DatagramPacket(
+            final var packageToSend = new DatagramPacket(
                     bufferSend,
                     bufferSend.length,
-                    InetAddress.getByName(connection_host_group),
-                    Integer.parseInt(connection_port));
+                    InetAddress.getByName(connectionHostGroup),
+                    Integer.parseInt(connectionPort));
 
             ds.send(packageToSend);
-            ds.close();
-        } catch (IOException e) {
-            System.err.println("Error sending data to the server: " + e.getMessage());
+        } catch (final IOException e) {
+            LOG.error("Error sending data to the server", e);
         }
 
     }

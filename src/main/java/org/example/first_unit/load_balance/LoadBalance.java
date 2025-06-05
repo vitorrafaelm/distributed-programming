@@ -24,7 +24,7 @@ public class LoadBalance {
 
         setupDataServersAddresses();
 
-        try (ServerSocket serverSocket = new ServerSocket(PORT, 0, InetAddress.getByName("0.0.0.0"))) {
+        try (ServerSocket serverSocket = new ServerSocket(PORT, 0, InetAddress.getByName(System.getenv("DB_IP")))) {
             LOG.info("Load balance iniciado na porta " + PORT);
 
             LOG.info("Proxies registrados: " + dataServers);
@@ -44,11 +44,11 @@ public class LoadBalance {
                     ClientHandler clientHandler = new ClientHandler(clientSocket, dataServers, useRandomBalancing);
                     new Thread(clientHandler).start();
                 } catch (IOException e) {
-                    System.err.println("Erro ao aceitar conexão: " + e.getMessage());
+                    LOG.error("Erro ao aceitar conexão", e);
                 }
             }
         } catch (IOException e) {
-            System.err.println("Erro ao iniciar o servidor: " + e.getMessage());
+            LOG.error("Erro ao iniciar o servidor", e);
         }
     }
 

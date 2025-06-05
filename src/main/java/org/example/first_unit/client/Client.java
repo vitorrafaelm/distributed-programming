@@ -24,7 +24,7 @@ public class Client implements Runnable {
     private final String host;
     private final Integer port;
 
-    public Client(String multicastHost, Integer multicastPort, Integer port) throws IOException {
+    public Client(final String multicastHost, final Integer multicastPort, final Integer port) throws IOException {
         this.multicastHost = multicastHost;
         this.multicastPort = multicastPort;
         this.port = port;
@@ -74,7 +74,6 @@ public class Client implements Runnable {
         } catch (final IOException e) {
             LOG.error("Erro ao aceitar conexão do cliente", e);
         }
-        ;
     }
 
     private void requestData() {
@@ -93,9 +92,8 @@ public class Client implements Runnable {
                     InetAddress.getByName(multicastHost), multicastPort);
 
             ds.send(packageToSend);
-            ds.close();
-        } catch (IOException e) {
-            System.err.println("Error sending data to the server: " + e.getMessage());
+        } catch (final IOException e) {
+            LOG.error("Error sending data to the server", e);
         }
     }
 

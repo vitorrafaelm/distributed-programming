@@ -1,6 +1,8 @@
 package org.example.first_unit.drones.base;
 
 import org.example.first_unit.drones.connection.LoadBalanceConnection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.file.Paths;
@@ -8,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BaseDrone {
+
+    private static final Logger LOG = LoggerFactory.getLogger(BaseDrone.class.getSimpleName());
+
     private String csv_file_name;
     private String connection_port;
     private String connection_host;
@@ -22,8 +27,8 @@ public class BaseDrone {
         try {
             List<String> batch = new ArrayList<>();
             FileReader fileReader = new FileReader(
-                    Paths.get("src/main/java/org/example/first_unit/drones/files", csv_file_name).toAbsolutePath().toString()
-            );
+                    Paths.get("src/main/java/org/example/first_unit/drones/files", csv_file_name).toAbsolutePath()
+                            .toString());
 
             try (BufferedReader reader = new BufferedReader(fileReader)) {
                 String line;
@@ -45,7 +50,7 @@ public class BaseDrone {
                 throw new RuntimeException(e);
             }
         } catch (IOException e) {
-            System.err.println("Error reading the CSV file: " + e.getMessage());
+            LOG.error("Error reading the CSV file", e);
         }
     }
 
