@@ -7,13 +7,12 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Scanner;
 
-public class TheDroneWest {
+public class DroneNorth {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TheDroneWest.class.getSimpleName());
+    private static final Logger LOG = LoggerFactory.getLogger(DroneNorth.class.getSimpleName());
 
     public static void main(String[] args) {
-
-        String csv_file_name = "drone_west.csv";
+        String csv_file_name = "drone_north.csv";
 
         LoadBalanceConnection loadBalanceConnection = new LoadBalanceConnection("localhost", 9876);
         loadBalanceConnection.connectToLocationServer();
