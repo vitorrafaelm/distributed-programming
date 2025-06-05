@@ -65,11 +65,9 @@ public class Client implements Runnable {
                 LOG.info("Aguardando conexão do servidor de datacenter na porta {}", port);
                 final var datacenterSocket = receiver.accept();
 
-                try (final var input = new ObjectInputStream(datacenterSocket.getInputStream())) {
-                    final var data = (String) input.readObject();
+                try (final var input = datacenterSocket.getInputStream()) {
+                    final var data = new String(input.readAllBytes());
                     LOG.info("Dados recebidos do servidor: {}", data);
-                } catch (final ClassNotFoundException e) {
-                    LOG.error("Erro ao interpretar os dados recebidos", e);
                 } finally {
                     datacenterSocket.close();
                 }

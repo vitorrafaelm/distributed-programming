@@ -5,17 +5,21 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionJDBC {
+    private static final String URL = "jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1";
+    private static final String USER = "sa";
+    private static final String PASSWORD = "";
+
     private static ConnectionJDBC instance;
     private Connection connection;
 
     public ConnectionJDBC() throws SQLException {
-        String url = "jdbc:postgresql://localhost:5432/weather";
-        String username = "weather";
-        String password = "weather";
+        // String url = "jdbc:postgresql://localhost:5432/weather";
+        // String username = "weather";
+        // String password = "weather";
 
         try {
             Class.forName("org.postgresql.Driver");
-            this.connection = DriverManager.getConnection(url, username, password);
+            this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("Database Connection Created With success!!");
         } catch (ClassNotFoundException ex) {
             System.out.println("Database Connection Creation Failed : " + ex.getMessage());
@@ -36,4 +40,3 @@ public class ConnectionJDBC {
         return instance;
     }
 }
-

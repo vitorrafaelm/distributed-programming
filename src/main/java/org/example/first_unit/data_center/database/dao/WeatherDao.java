@@ -2,23 +2,34 @@ package org.example.first_unit.data_center.database.dao;
 
 import org.example.first_unit.data_center.database.ConnectionJDBC;
 import org.example.first_unit.data_center.database.entities.Weather;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class WeatherDao implements BaseDao<Weather> {
-    Connection connection;
+    private static final Logger LOG = LoggerFactory.getLogger(WeatherDao.class.getSimpleName());
+    private static final String tableName = "weather";
 
-    public WeatherDao() {
-        try {
-            this.connection = new ConnectionJDBC().getConnection();
+    private final Connection connection;
+
+    public WeatherDao() throws SQLException {
+        this.connection = new ConnectionJDBC().getConnection();
+    }
+
+    public void initialize() {
+        try (final var statement = connection.createStatement()) {
+            statement.executeUpdate("create table weather (id text, weather_data text)");
+            LOG.info("Criada tabela {}", tableName);
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Erro ao inicializar banco de dados", e);
         }
     }
 
-    public Weather insert (Weather weather) {
+    public Weather insert(Weather weather) {
         String sql = "INSERT INTO weather (id,weather_data) VALUES (?,?);";
         try {
             LocalDateTime now = LocalDateTime.now();
@@ -38,7 +49,7 @@ public class WeatherDao implements BaseDao<Weather> {
             pstSelect.setString(1, id_random);
             ResultSet rs = pstSelect.executeQuery();
 
-            if(rs.next()) {
+            if (rs.next()) {
                 weather.setId(rs.getString("id"));
                 weather.setWeatherData(rs.getString("weather_data"));
 
@@ -74,7 +85,7 @@ public class WeatherDao implements BaseDao<Weather> {
         try {
             PreparedStatement pst = this.connection.prepareStatement(sql);
             pst.setString(1, weather.getWeatherData());
-            pst.setString(2, weather.getId() );
+            pst.setString(2, weather.getId());
             pst.executeUpdate();
             return true;
 
@@ -92,7 +103,7 @@ public class WeatherDao implements BaseDao<Weather> {
             PreparedStatement pst = this.connection.prepareStatement(sql);
             pst.setString(1, weather.getId());
             ResultSet rs = pst.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 weather.setWeatherData(rs.getString("weather_data"));
             }
 

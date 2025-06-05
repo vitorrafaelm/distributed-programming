@@ -14,7 +14,11 @@ public class WeatherService {
     BaseDao<Weather> dao;
 
     public WeatherService() {
-        this.dao = new WeatherDao();
+        try {
+            this.dao = new WeatherDao();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error initializing WeatherService: " + e.getMessage(), e);
+        }
     }
 
     public Weather add(Weather dto) throws SQLException {
@@ -25,7 +29,7 @@ public class WeatherService {
         List<Weather> weathers = new ArrayList<>();
         ResultSet rs = dao.findAll();
         try {
-            while(rs.next()) {
+            while (rs.next()) {
                 Weather weather = new Weather();
                 weather.setId(rs.getString("id"));
                 weather.setWeatherData(rs.getString("weather_data"));
@@ -40,20 +44,20 @@ public class WeatherService {
         }
     }
 
-    public boolean update (Weather weather) throws SQLException {
+    public boolean update(Weather weather) throws SQLException {
         return false;
     }
 
-    public boolean delete (Weather weather) {
+    public boolean delete(Weather weather) {
         return false;
     }
 
-    public Weather search (Weather weather) {
+    public Weather search(Weather weather) {
 
-        if(!Objects.equals(weather.getId(), "")) {
+        if (!Objects.equals(weather.getId(), "")) {
             return dao.findById(weather);
-        }
-        else return null;
+        } else
+            return null;
     }
 
     public int get_registers_quantity() {
