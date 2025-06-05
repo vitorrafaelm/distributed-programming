@@ -6,7 +6,12 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class LoadBalanceConnection {
+
+    private static final Logger LOG = LoggerFactory.getLogger(LoadBalanceConnection.class.getSimpleName());
 
     private String loadBalanceHost;
     private int loadBalancePort;
@@ -28,7 +33,7 @@ public class LoadBalanceConnection {
             String[] serverInfo = response.split(":");
             this.dataServerHost = serverInfo[0];
             this.dataServerPort = serverInfo[1];
-            System.out.println("Servidor de dados encontrado em " + dataServerHost + ":" + dataServerPort);
+            LOG.info("Servidor de dados encontrado em " + dataServerHost + ":" + dataServerPort);
         } catch (IOException e) {
             System.err.println("Erro ao conectar ao servidor de localização: " + e.getMessage());
             System.exit(1);

@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class WeatherDao implements BaseDao<Weather> {
@@ -32,9 +31,7 @@ public class WeatherDao implements BaseDao<Weather> {
     public Weather insert(Weather weather) {
         String sql = "INSERT INTO weather (id,weather_data) VALUES (?,?);";
         try {
-            LocalDateTime now = LocalDateTime.now();
-
-            System.out.println(weather.toString());
+            LOG.info(weather.toString());
 
             String id_random = UUID.randomUUID().toString();
 

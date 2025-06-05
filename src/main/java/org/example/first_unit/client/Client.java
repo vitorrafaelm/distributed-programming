@@ -1,7 +1,6 @@
 package org.example.first_unit.client;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;

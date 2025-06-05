@@ -2,7 +2,6 @@ package org.example.first_unit.data_center.server;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class MulticastExecutor {
     private String connection_host;

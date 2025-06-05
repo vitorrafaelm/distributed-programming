@@ -1,16 +1,20 @@
 package org.example.first_unit.drones.connection;
 
-import com.google.gson.JsonObject;
-
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.gson.JsonObject;
+
 public class BaseConnection implements Runnable {
+
+    private static final Logger LOG = LoggerFactory.getLogger(BaseConnection.class.getSimpleName());
+
     private String connection_host_group;
     private String connection_port;
     private List<String> batch;
@@ -24,7 +28,7 @@ public class BaseConnection implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Connecting to " + connection_host_group + " on port " + connection_port);
+        LOG.info("Connecting to " + connection_host_group + " on port " + connection_port);
 
         try (DatagramSocket ds = new DatagramSocket()) {
             JsonObject jsonObject = new JsonObject();
@@ -33,14 +37,13 @@ public class BaseConnection implements Runnable {
 
             byte bufferSend[] = jsonObject.toString().getBytes();
 
-            System.out.println(bufferSend.length + " bytes to send");
+            LOG.info(bufferSend.length + " bytes to send");
 
             DatagramPacket packageToSend = new DatagramPacket(
                     bufferSend,
                     bufferSend.length,
                     InetAddress.getByName(connection_host_group),
-                    Integer.parseInt(connection_port)
-            );
+                    Integer.parseInt(connection_port));
 
             ds.send(packageToSend);
             ds.close();

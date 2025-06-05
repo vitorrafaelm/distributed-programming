@@ -4,7 +4,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ConnectionJDBC {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ConnectionJDBC.class.getSimpleName());
+
     private static final String URL = "jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1";
     private static final String USER = "sa";
     private static final String PASSWORD = "";
@@ -20,9 +26,9 @@ public class ConnectionJDBC {
         try {
             Class.forName("org.postgresql.Driver");
             this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Database Connection Created With success!!");
+            LOG.info("Database Connection Created With success!!");
         } catch (ClassNotFoundException ex) {
-            System.out.println("Database Connection Creation Failed : " + ex.getMessage());
+            LOG.info("Database Connection Creation Failed : " + ex.getMessage());
         }
     }
 

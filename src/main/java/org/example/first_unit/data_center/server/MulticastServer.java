@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.example.first_unit.data_center.database.entities.Weather;
 import org.example.first_unit.data_center.database.services.WeatherService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.*;
 import java.sql.SQLException;
@@ -11,6 +13,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MulticastServer implements Runnable {
+
+    private static final Logger LOG = LoggerFactory.getLogger(MulticastServer.class.getSimpleName());
+
     private String multicastServerPort;
     private String getMulticastServerHost;
 
@@ -32,7 +37,7 @@ public class MulticastServer implements Runnable {
 
             while (flag) {
                 byte[] messageReceived = CaptureMessage(ms);
-                System.out.println("Message received: " + new String(messageReceived).trim());
+                LOG.info("Message received: " + new String(messageReceived).trim());
 
                 String receivedData = new String(messageReceived).trim();
                 JsonObject message = JsonParser.parseString(receivedData).getAsJsonObject();
@@ -72,7 +77,7 @@ public class MulticastServer implements Runnable {
         List<String> originalData = Arrays.asList(data.replace("[", "").replace("]", "").split(", "));
 
         originalData.forEach(item -> {
-            System.out.println("Processing item: " + item);
+            LOG.info("Processing item: " + item);
 
             Weather weather = new Weather();
             weather.setWeatherData(item.replaceAll("[,#;\\-]", "//"));

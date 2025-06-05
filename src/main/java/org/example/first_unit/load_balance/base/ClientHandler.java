@@ -8,7 +8,13 @@ import java.net.Socket;
 import java.util.List;
 import java.util.Random;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ClientHandler implements Runnable {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ClientHandler.class.getSimpleName());
+
     private final Socket clientSocket;
     private final List<String> dataServers;
     private final boolean useRandomBalancing;
@@ -23,13 +29,12 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         try (PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
-             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))
-        ) {
-            String request = in.readLine();
+                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
+            in.readLine();
             String proxyAddress = getNextProxyAddress();
 
             out.println(proxyAddress);
-            System.out.println("Cliente direcionado para o servidor de dados: " + proxyAddress);
+            LOG.info("Cliente direcionado para o servidor de dados: " + proxyAddress);
 
             out.close();
             in.close();

@@ -1,8 +1,12 @@
 package org.example.first_unit.data_center;
 
 import org.example.first_unit.data_center.server.MulticastExecutor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DataCenterBackup {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DataCenterBackup.class.getSimpleName());
 
     private static String DataCenterPort = "54329";
     private static String DataCenterHost = "225.7.8.9";
@@ -12,7 +16,7 @@ public class DataCenterBackup {
             MulticastExecutor multicastExecutor = new MulticastExecutor(DataCenterPort, DataCenterHost);
             multicastExecutor.run();
 
-            System.out.println("Data Center is running on host: " + DataCenterHost + " and port: " + DataCenterPort);
+            LOG.info("Data Center is running on host: " + DataCenterHost + " and port: " + DataCenterPort);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
