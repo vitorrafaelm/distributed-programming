@@ -10,7 +10,6 @@ import java.util.UUID;
 
 public class WeatherDao implements BaseDao<Weather> {
     private static final Logger LOG = LoggerFactory.getLogger(WeatherDao.class.getSimpleName());
-    private static final String tableName = "weather";
 
     private final Connection connection;
 
@@ -18,17 +17,8 @@ public class WeatherDao implements BaseDao<Weather> {
         this.connection = new ConnectionJDBC().getConnection();
     }
 
-    public void initialize() {
-        try (final var statement = connection.createStatement()) {
-            statement.executeUpdate("create table weather (id text, weather_data text)");
-            LOG.info("Criada tabela {}", tableName);
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Erro ao inicializar banco de dados", e);
-        }
-    }
-
     public Weather insert(Weather weather) {
+        LOG.info("Inserindo: {}", weather);
         String sql = "INSERT INTO weather (id,weather_data) VALUES (?,?);";
         try {
             LOG.info(weather.toString());

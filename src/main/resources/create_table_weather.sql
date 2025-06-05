@@ -1,0 +1,1 @@
+create table weather (id text, weather_data text);

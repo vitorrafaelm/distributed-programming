@@ -21,13 +21,15 @@ public class LoadBalance {
     private static final boolean useRandomBalancing = false;
 
     public static void main(String[] args) {
+
         setupDataServersAddresses();
 
         try (ServerSocket serverSocket = new ServerSocket(PORT, 0, InetAddress.getByName("0.0.0.0"))) {
             LOG.info("Load balance iniciado na porta " + PORT);
 
             LOG.info("Proxies registrados: " + dataServers);
-            LOG.info("Load balance iniciado no IP " + serverSocket.getLocalPort() + "/" + serverSocket.getInetAddress());
+            LOG.info(
+                    "Load balance iniciado no IP " + serverSocket.getLocalPort() + "/" + serverSocket.getInetAddress());
 
             InetAddress localHost = InetAddress.getLocalHost();
             String ipAddress = localHost.getHostAddress();
