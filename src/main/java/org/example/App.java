@@ -3,10 +3,10 @@ package org.example;
 import org.example.first_unit.client.ClientLauncher;
 import org.example.first_unit.data_center.DataCenter;
 import org.example.first_unit.data_center.DataCenterBackup;
-import org.example.first_unit.drones.droneEast;
-import org.example.first_unit.drones.droneNorth;
-import org.example.first_unit.drones.droneSouth;
-import org.example.first_unit.drones.droneWest;
+import org.example.first_unit.drones.TheDroneEast;
+import org.example.first_unit.drones.TheDroneNorth;
+import org.example.first_unit.drones.TheDroneSouth;
+import org.example.first_unit.drones.TheDroneWest;
 import org.example.first_unit.load_balance.LoadBalance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,16 +41,16 @@ public class App {
                 DataCenterBackup.main(args);
                 break;
             case 4:
-                droneEast.main(args);
+                TheDroneEast.main(args);
                 break;
             case 5:
-                droneWest.main(args);
+                TheDroneWest.main(args);
                 break;
             case 6:
-                droneNorth.main(args);
+                TheDroneNorth.main(args);
                 break;
             case 7:
-                droneSouth.main(args);
+                TheDroneSouth.main(args);
                 break;
             case 8:
                 ClientLauncher.main(args);

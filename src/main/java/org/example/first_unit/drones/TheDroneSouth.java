@@ -7,14 +7,15 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Scanner;
 
-public class droneEast {
+public class TheDroneSouth {
 
-    private static final Logger LOG = LoggerFactory.getLogger(droneEast.class.getSimpleName());
+    private static final Logger LOG = LoggerFactory.getLogger(TheDroneSouth.class.getSimpleName());
+
 
     public static void main(String[] args) {
-        String csv_file_name = "drone_east.csv";
+        String csv_file_name = "drone_south.csv";
 
-        LoadBalanceConnection loadBalanceConnection = new LoadBalanceConnection(System.getenv("LOAD_BALANCE_IP"), 9876);
+        LoadBalanceConnection loadBalanceConnection = new LoadBalanceConnection("localhost", 9876);
         loadBalanceConnection.connectToLocationServer();
 
         String dataServerPort = loadBalanceConnection.getDataServerPort();

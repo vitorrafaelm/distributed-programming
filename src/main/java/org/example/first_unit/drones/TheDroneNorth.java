@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Scanner;
 
-public class droneNorth {
+public class TheDroneNorth {
 
-    private static final Logger LOG = LoggerFactory.getLogger(droneNorth.class.getSimpleName());
+    private static final Logger LOG = LoggerFactory.getLogger(TheDroneNorth.class.getSimpleName());
 
     public static void main(String[] args) {
         String csv_file_name = "drone_north.csv";
