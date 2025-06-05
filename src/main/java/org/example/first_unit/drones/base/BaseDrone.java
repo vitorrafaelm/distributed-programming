@@ -1,36 +1,32 @@
 package org.example.first_unit.drones.base;
 
-import org.example.first_unit.drones.connection.LoadBalanceConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import lombok.AllArgsConstructor;
 
 import java.io.*;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+@AllArgsConstructor
 public class BaseDrone {
 
     private static final Logger LOG = LoggerFactory.getLogger(BaseDrone.class.getSimpleName());
 
-    private String csv_file_name;
-    private String connection_port;
-    private String connection_host;
+    private final String csvFileName;
+    private final String connectionPort;
+    private final String connectionHost;
 
-    public BaseDrone(String csv_file_name, String connection_port, String connection_host) {
-        this.csv_file_name = csv_file_name;
-        this.connection_port = connection_port;
-        this.connection_host = connection_host;
-    }
-
-    public void processAndSendData(LoadBalanceConnection loadBalanceConnection) {
+    public void processAndSendData() {
         try {
-            List<String> batch = new ArrayList<>();
-            FileReader fileReader = new FileReader(
-                    Paths.get("src/main/java/org/example/first_unit/drones/files", csv_file_name).toAbsolutePath()
+            final List<String> batch = new ArrayList<>();
+            final var fileReader = new FileReader(
+                    Paths.get("src/main/java/org/example/first_unit/drones/files", csvFileName).toAbsolutePath()
                             .toString());
 
-            try (BufferedReader reader = new BufferedReader(fileReader)) {
+            try (final var reader = new BufferedReader(fileReader)) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     batch.add(line);
@@ -46,19 +42,19 @@ public class BaseDrone {
                 if (!batch.isEmpty()) {
                     sendBatch(batch);
                 }
-            } catch (InterruptedException e) {
+            } catch (final InterruptedException e) {
                 throw new RuntimeException(e);
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOG.error("Error reading the CSV file", e);
         }
     }
 
-    private void sendBatch(List<String> batch) {
+    private void sendBatch(final List<String> batch) {
         try {
-            BaseExecutor baseExecutor = new BaseExecutor(connection_host, connection_port, batch);
+            final var baseExecutor = new BaseExecutor(connectionHost, connectionPort, batch);
             baseExecutor.run();
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             throw new RuntimeException(e);
         }
     }

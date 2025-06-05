@@ -8,17 +8,13 @@ public class DataCenterBackup {
 
     private static final Logger LOG = LoggerFactory.getLogger(DataCenterBackup.class.getSimpleName());
 
-    private static String DataCenterPort = "54329";
-    private static String DataCenterHost = "225.7.8.9";
+    private static String dataCenterPort = "54329";
+    private static String dataCenterHost = "225.7.8.9";
 
-    public static void main(String[] args) {
-        try {
-            MulticastExecutor multicastExecutor = new MulticastExecutor(DataCenterPort, DataCenterHost);
-            multicastExecutor.run();
+    public static void main(final String[] args) {
+        final var multicastExecutor = new MulticastExecutor(dataCenterPort, dataCenterHost);
+        multicastExecutor.run();
 
-            LOG.info("Data Center is running on host: " + DataCenterHost + " and port: " + DataCenterPort);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        LOG.info("Data Center is running on host: {} and port: {}", dataCenterHost, dataCenterPort);
     }
 }

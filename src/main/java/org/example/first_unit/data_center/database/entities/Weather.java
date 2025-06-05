@@ -1,22 +1,15 @@
 package org.example.first_unit.data_center.database.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Weather {
 
-    private String id, weatherData;
+    private String id;
+    private String weatherData;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getWeatherData() {
-        return weatherData;
-    }
-
-    public void setWeatherData(String weatherData) {
-        this.weatherData = weatherData;
-    }
 }

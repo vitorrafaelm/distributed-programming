@@ -1,11 +1,11 @@
 package org.example.first_unit.data_center.database.dao;
 import java.sql.ResultSet;
 
-public interface BaseDao<entity> {
-    public abstract entity insert(entity e);
-    public boolean delete(entity e);
-    public boolean update(entity e);
-    public entity findById(entity e);
+public interface BaseDao<E> {
+    public abstract E insert(E e);
+    public boolean delete(E e);
+    public boolean update(E e);
+    public E findById(E e);
     public ResultSet findAll();
     public Integer getRegistersQuantity();
 }

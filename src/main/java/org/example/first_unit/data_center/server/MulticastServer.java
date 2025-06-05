@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.*;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -87,12 +86,7 @@ public class MulticastServer implements Runnable {
 
             final var weather = new Weather();
             weather.setWeatherData(item.replaceAll("[,#;\\-]", "//"));
-
-            try {
-                weatherService.add(weather);
-            } catch (final SQLException e) {
-                throw new RuntimeException(e);
-            }
+            weatherService.add(weather);
         });
     }
 

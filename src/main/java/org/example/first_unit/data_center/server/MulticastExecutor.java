@@ -1,21 +1,21 @@
 package org.example.first_unit.data_center.server;
 
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MulticastExecutor {
-    private String connection_host;
-    private String connection_port;
+    private final String connectionHost;
+    private final String connectionPort;
 
-    public MulticastExecutor(String connectionHost, String connectionPort) {
-        this.connection_host = connectionHost;
-        this.connection_port = connectionPort;
+    public MulticastExecutor(final String connectionHost, final String connectionPort) {
+        this.connectionHost = connectionHost;
+        this.connectionPort = connectionPort;
     }
 
-    public void run() throws InterruptedException {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(new MulticastServer(connection_host, connection_port));
-        // executor.shutdown();
-        // executor.awaitTermination(1, TimeUnit.SECONDS);
+    public void run() {
+        try (var executor = Executors.newSingleThreadExecutor()) {
+            executor.submit(new MulticastServer(connectionHost, connectionPort));
+            // executor.shutdown();
+            // executor.awaitTermination(1, TimeUnit.SECONDS);
+        }
     }
 }

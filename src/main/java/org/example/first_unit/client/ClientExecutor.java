@@ -14,8 +14,7 @@ public class ClientExecutor implements Runnable {
 
     @Override
     public void run() {
-        try {
-            final var executor = Executors.newSingleThreadExecutor();
+        try (final var executor = Executors.newSingleThreadExecutor();) {
             executor.submit(new Client(multicastHost, multicastPort, port));
         } catch (final IOException e) {
             throw new RuntimeException("Erro ao iniciar o cliente", e);

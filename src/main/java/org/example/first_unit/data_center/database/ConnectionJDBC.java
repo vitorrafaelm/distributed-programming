@@ -18,7 +18,7 @@ public class ConnectionJDBC {
     private static ConnectionJDBC instance;
     private Connection connection;
 
-    public ConnectionJDBC() throws SQLException {
+    private ConnectionJDBC() throws SQLException {
         this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
         LOG.info("Database Connection Created With success!!");
     }
@@ -28,9 +28,7 @@ public class ConnectionJDBC {
     }
 
     public static ConnectionJDBC getInstance() throws SQLException {
-        if (instance == null) {
-            instance = new ConnectionJDBC();
-        } else if (instance.getConnection().isClosed()) {
+        if (instance == null || instance.getConnection().isClosed()) {
             instance = new ConnectionJDBC();
         }
 

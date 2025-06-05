@@ -7,35 +7,34 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Scanner;
 
-public class droneSouth {
+public class DroneSouth {
 
-    private static final Logger LOG = LoggerFactory.getLogger(droneSouth.class.getSimpleName());
+    private static final Logger LOG = LoggerFactory.getLogger(DroneSouth.class.getSimpleName());
 
+    public static void main(final String[] args) {
+        final var csvFileFame = "drone_south.csv";
 
-    public static void main(String[] args) {
-        String csv_file_name = "drone_south.csv";
-
-        LoadBalanceConnection loadBalanceConnection = new LoadBalanceConnection("localhost", 9876);
+        final var loadBalanceConnection = new LoadBalanceConnection("localhost", 9876);
         loadBalanceConnection.connectToLocationServer();
 
-        String dataServerPort = loadBalanceConnection.getDataServerPort();
-        String dataServerHost = loadBalanceConnection.getDataServerHost();
+        final var dataServerPort = loadBalanceConnection.getDataServerPort();
+        final var dataServerHost = loadBalanceConnection.getDataServerHost();
 
-        BaseDrone baseDrone = new BaseDrone(csv_file_name, dataServerPort, dataServerHost);
+        final var baseDrone = new BaseDrone(csvFileFame, dataServerPort, dataServerHost);
 
-        Scanner scanner = new Scanner(System.in);
-        boolean running = true;
+        final var scanner = new Scanner(System.in);
+        var running = true;
 
         while (running) {
             System.out.println("Choose an option:");
             System.out.println("1. Call processAndSendData");
             System.out.println("2. Exit");
 
-            String userInput = scanner.nextLine().trim();
+            final var userInput = scanner.nextLine().trim();
 
             switch (userInput) {
                 case "1":
-                    baseDrone.processAndSendData(loadBalanceConnection);
+                    baseDrone.processAndSendData();
                     LOG.info("processAndSendData has been executed.");
                     break;
                 case "2":
