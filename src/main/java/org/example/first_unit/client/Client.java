@@ -20,10 +20,10 @@ public class Client implements Runnable {
 
     private static final Logger LOG = LoggerFactory.getLogger(Client.class.getSimpleName());
 
-    private final String host;
-    private final Integer port;
     private final String multicastHost;
     private final Integer multicastPort;
+    private final String host;
+    private final Integer port;
 
     @Override
     public void run() {
