@@ -1,5 +1,6 @@
 package org.example.first_unit.drones;
 
+import org.example.first_unit.Constants;
 import org.example.first_unit.drones.base.BaseDrone;
 import org.example.first_unit.drones.connection.LoadBalanceConnection;
 import org.slf4j.Logger;
@@ -14,7 +15,7 @@ public class droneEast {
     public static void main(String[] args) {
         String csv_file_name = "drone_east.csv";
 
-        LoadBalanceConnection loadBalanceConnection = new LoadBalanceConnection(System.getenv("LOAD_BALANCE_IP"), 9876);
+        LoadBalanceConnection loadBalanceConnection = new LoadBalanceConnection(Constants.LOAD_BALANCE_IP, 9876);
         loadBalanceConnection.connectToLocationServer();
 
         String dataServerPort = loadBalanceConnection.getDataServerPort();

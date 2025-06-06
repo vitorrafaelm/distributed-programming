@@ -1,5 +1,6 @@
 package org.example.first_unit.load_balance;
 
+import org.example.first_unit.Constants;
 import org.example.first_unit.load_balance.base.ClientHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,7 @@ public class LoadBalance {
 
         setupDataServersAddresses();
 
-        try (ServerSocket serverSocket = new ServerSocket(PORT, 0, InetAddress.getByName(System.getenv("DB_IP")))) {
+        try (ServerSocket serverSocket = new ServerSocket(PORT, 0, InetAddress.getByName(Constants.DB_IP))) {
             LOG.info("Load balance iniciado na porta " + PORT);
 
             LOG.info("Proxies registrados: " + dataServers);
