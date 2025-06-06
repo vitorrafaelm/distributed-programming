@@ -27,6 +27,7 @@ public class LoadBalanceConnection {
         try (Socket socket = new Socket(loadBalanceHost, loadBalancePort)) {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out.flush();
 
             out.println("GET_APPLICATION_SERVER");
             String response = in.readLine();

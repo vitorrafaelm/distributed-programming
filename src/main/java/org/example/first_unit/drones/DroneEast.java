@@ -2,6 +2,7 @@ package org.example.first_unit.drones;
 
 import org.example.first_unit.drones.base.BaseDrone;
 import org.example.first_unit.drones.connection.LoadBalanceConnection;
+import org.example.first_unit.utils.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +15,7 @@ public class DroneEast {
     public static void main(final String[] args) {
         final var csvFileName = "drone_east.csv";
 
-        final var loadBalanceConnection = new LoadBalanceConnection(System.getenv("LOAD_BALANCE_IP"), 9876);
+        final var loadBalanceConnection = new LoadBalanceConnection(Constants.LOAD_BALANCE_IP, 9876);
         loadBalanceConnection.connectToLocationServer();
 
         final var dataServerPort = loadBalanceConnection.getDataServerPort();

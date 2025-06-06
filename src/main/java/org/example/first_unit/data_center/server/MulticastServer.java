@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.example.first_unit.data_center.database.entities.Weather;
 import org.example.first_unit.data_center.database.services.WeatherService;
+import org.example.first_unit.utils.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -104,7 +105,7 @@ public class MulticastServer implements Runnable {
         LOG.info("Host: {}, Port: {}", host, port);
 
         // Enviar dados para o cliente
-        try (final var client = new Socket(System.getenv("CLIENT_IP"), port)) {
+        try (final var client = new Socket(Constants.CLIENT_IP, port)) {
             final var writer = client.getOutputStream();
 
             writer.write(bufferSend);

@@ -1,14 +1,12 @@
 package org.example.first_unit.data_center.database.services;
 
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Objects;
+
 import org.example.first_unit.data_center.database.dao.BaseDao;
 import org.example.first_unit.data_center.database.dao.WeatherDao;
 import org.example.first_unit.data_center.database.entities.Weather;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
 
 public class WeatherService {
     BaseDao<Weather> dao;
@@ -26,22 +24,7 @@ public class WeatherService {
     }
 
     public List<Weather> list() {
-        final List<Weather> weathers = new ArrayList<>();
-        final var rs = dao.findAll();
-
-        try {
-            while (rs.next()) {
-                final var weather = new Weather();
-                weather.setId(rs.getString("id"));
-                weather.setWeatherData(rs.getString("weather_data"));
-
-                weathers.add(weather);
-            }
-            return weathers;
-        } catch (final SQLException e) {
-            e.printStackTrace();
-            return Collections.emptyList();
-        }
+        return dao.findAll();
     }
 
     public boolean update(final Weather weather) throws SQLException {

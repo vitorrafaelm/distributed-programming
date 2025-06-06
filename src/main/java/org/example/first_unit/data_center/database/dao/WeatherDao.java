@@ -6,6 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 public class WeatherDao implements BaseDao<Weather> {
@@ -84,14 +87,25 @@ public class WeatherDao implements BaseDao<Weather> {
         }
     }
 
-    public ResultSet findAll() {
+    public List<Weather> findAll() {
         final var sql = "SELECT * FROM weather;";
 
         try (final var pst = this.connection.prepareStatement(sql)) {
-            return pst.executeQuery();
+            final var resultSet = pst.executeQuery();
+            final List<Weather> all = new ArrayList<>();
+
+            while (resultSet.next()) {
+                final var weather = new Weather()
+                        .setId(resultSet.getString("id"))
+                        .setWeatherData(resultSet.getString("weather_data"));
+
+                all.add(weather);
+            }
+
+            return all;
         } catch (final SQLException ex) {
             ex.printStackTrace();
-            return null;
+            return Collections.emptyList();
         }
     }
 
