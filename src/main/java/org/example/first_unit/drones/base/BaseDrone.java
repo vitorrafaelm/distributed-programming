@@ -34,7 +34,7 @@ public class BaseDrone {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     batch.add(line);
-                    if (batch.size() == 1000) {
+                    if (batch.size() == 10) {
                         sendBatch(batch);
                         batch.clear();
 
